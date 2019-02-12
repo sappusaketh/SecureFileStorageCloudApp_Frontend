@@ -1,0 +1,123 @@
+<div flex="100" layout="column" ng-init="getPrograms()">
+  <md-card flex="20" layout="row" layout-align="center center">
+    <h1 style="    font-style: italic;"> “Do something today that your future self will thank you for.” —Unknown </h1>
+    <md-button class="md-raised md-primary" style="position:absolute; top:8%;right:3%" ng-click="createProgram()" ng-if="scope == 'instructor'">Create Program</md-button>
+    <md-button class="md-raised md-primary" style="position:absolute; top:8%;right:20%" ng-click="yourPrograms()" ng-if="scope == 'instructor'">Your Program</md-button>
+    <md-button class="md-raised md-primary" style="position:absolute; top:8%;right:3%" ng-click="subscribedPrograms()" ng-if="scope == 'customer'">subscribed Programs</md-button>
+  </md-card>
+  <md-card flex="80" layout="row" layout-align="center">
+    <div ng-cloak style=" overflow-y: scroll;" flex="70">
+      <md-card ng-repeat="program in programs track by $index" layout="row" flex="100" layout-wrap>
+        <div layout="row" flex="100" layout-align="center">
+          <h2>{{program.name}}</h2>
+        </div>
+        <div layout-padding layout="row" flex="100">
+          <div  layout="row" flex="100" layout-align="center">
+            instrictor name
+          </div>
+          <div  layout="row" flex="100" layout-align="center">
+          Cost :  {{program.cost}} $
+          </div>
+        </div>
+        <div  layout-padding layout="row" flex="100">
+          <div  layout="row" flex="100" layout-align="center">
+          Start Date :  {{program.startDate | date:'yyyy-MM-dd'}}
+          </div>
+          <div  layout="row" flex="100" layout-align="center">
+          End Date :    {{program.endDate | date:'yyyy-MM-dd'}}
+          </div>
+        </div>
+        <div ng-if="subP" layout="row" flex="100" layout-align="space-around center">
+            <div layout-align="center"class="" flex >
+              <div layout="row" layout-align="center"> {{program.selectedSlot}} </div>
+              <div layout="row" layout-wrap layout-align="center" >
+                <!-- <div flex="50"> -->
+                  <md-button ng-if="scope == 'instructor'" ng-click="programInfoPage(program,'program1')">Info</md-button>
+                <!-- </div> -->
+                <!-- <div flex="50"> -->
+                  <md-button class="md-warn" ng-if="scope == 'instructor'" ng-click="deleteProgram(program,'program1')">delete</md-button>
+                <!-- </div> -->
+                 <md-button ng-if="scope == 'customer' && subP == true" ng-click="infoPage(program,'program1')">Details</md-button>
+                 <md-button ng-if="scope == 'customer' && subP == false" class="md-raised md-primary" ng-click="selectProgram(program,'program1')">Select</md-button>
+                 <md-button  ng-if="scope == 'customer' && subP == true" class="md-raised md-primary" ng-click="intModal(program,'program1')">Update</md-button>
+              </div>
+            </div>
+        </div>
+
+      <div ng-if="!subP" layout="row" flex="100" layout-align="space-around">
+          <div ng-if="(program.slots.program1 && program.slots.program1.capacity > 0 && scope == 'customer') || (scope == 'instructor' && program.slots.program1) " layout-align="center" class="" flex >
+            <div  layout="row" layout-align="center">Program 1  ( {{program.slots.program1.time | date:'hh:mm:ss a'}} )</div>
+            <div layout="row" layout-wrap layout-align="center" >
+              <!-- <div flex="50"> -->
+                <md-button ng-if="scope == 'instructor'" ng-click="programInfoPage(program,'program1')">Info</md-button>
+              <!-- </div> -->
+              <!-- <div flex="50"> -->
+                <md-button class="md-warn" ng-if="scope == 'instructor'" ng-click="deleteProgram(program,'program1')">delete</md-button>
+              <!-- </div> -->
+               <md-button ng-if="scope == 'customer' && subP == true" ng-click="infoPage(program,'program1')">Details</md-button>
+               <md-button ng-if="scope == 'customer' && subP == false" class="md-raised md-primary" ng-click="selectProgram(program,'program1')">Select</md-button>
+               <md-button  ng-if="scope == 'customer' && subP == true" class="md-raised md-primary" ng-click="intModal(program,'program1')">Update</md-button>
+            </div>
+            </div>
+            <div ng-if="(program.slots.program2 && program.slots.program2.capacity > 0&& scope == 'customer') || (scope == 'instructor' && program.slots.program2) " layout-align="center" class="" flex >
+              <div layout="row" layout-align="center">Program 2  ( {{program.slots.program2.time | date:'hh:mm:ss a'}} )</div>
+              <div layout="row" layout-wrap layout-align="center">
+                <!-- <div flex="50"> -->
+                  <md-button ng-if="scope == 'instructor'" ng-click="programInfoPage(program,'program2')">Info</md-button>
+                <!-- </div> -->
+                <!-- <div flex="50"> -->
+                  <md-button class="md-warn" ng-if="scope == 'instructor'" ng-click="deleteProgram(program,'program2')">delete</md-button>
+                <!-- </div> -->
+                <md-button ng-if="scope == 'customer' && subP == true" ng-click="infoPage(program,'program2')">Details</md-button>
+               <md-button ng-if="scope == 'customer' && subP == false" class="md-raised md-primary" ng-click="selectProgram(program,'program2')">Select</md-button>
+               <md-button  ng-if="scope == 'customer' && subP == true" class="md-raised md-primary" ng-click="intModal(program,'program2')">Update</md-button>
+              </div>
+              </div>
+              <div class="" ng-if="(program.slots.program3 && program.slots.program3.capacity > 0&& scope == 'customer') || (scope == 'instructor' && program.slots.program3) " layout-align="center" flex >
+                <div layout="row" layout-align="center">Program 3  ( {{program.slots.program3.time | date:'hh:mm:ss a'}} )</div>
+                <div layout="row" layout-wrap layout-align="center">
+                  <!-- <div flex="50"> -->
+                    <md-button ng-if="scope == 'instructor'" ng-click="programInfoPage(program,'program3')">Info</md-button>
+                  <!-- </div> -->
+                  <!-- <div flex="50"> -->
+                    <md-button class="md-warn" ng-if="scope == 'instructor'" ng-click="deleteProgram(program,'program3')">delete</md-button>
+                  <!-- </div> -->
+                  <md-button ng-if="scope == 'customer' && subP == true" ng-click="infoPage(program,'program3')">Details</md-button>
+                 <md-button ng-if="scope == 'customer' && subP == false" class="md-raised md-primary" ng-click="selectProgram(program,'program3')">Select</md-button>
+                 <md-button  ng-if="scope == 'customer' && subP == true" class="md-raised md-primary" ng-click="intModal(program,'program3')">Update</md-button>
+                </div>
+                </div>
+        </div>
+        <!-- <md-button ng-if="scope == 'customer' && subP == true" ng-click="infoPage(program)">Details</md-button>
+        <md-button ng-if="scope == 'customer' && subP == false" class="md-raised md-primary" ng-click="selectProgram(program)">Select</md-button>
+        <md-button  ng-if="scope == 'customer' && subP == true" class="md-raised md-primary" ng-click="intModal(program)">Update</md-button>
+        <md-button ng-if="scope == 'instructor'" ng-click="programInfoPage(program)">Info</md-button>
+        <md-button class="md-warn" ng-if="scope == 'instructor'" ng-click="deleteProgram(program)">delete</md-button> -->
+
+        </div>
+      </md-card>
+    <!-- <md-content layout="row" >
+        <md-tabs flex="100" md-stretch-tabs="always" md-dynamic-height md-border-bottom>
+          <md-tab label="one" layout="row">
+            <md-content class="md-padding" layout="row">
+              <h1 class="md-display-2">Tab One</h1>
+
+
+
+
+
+            </md-content>
+          </md-tab>
+          <md-tab label="two">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Tab Two</h1>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.</p>
+              <p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.</p>
+              <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+            </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-content> -->
+    </div>
+  </md-card>
+</div>
